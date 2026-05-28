@@ -60,21 +60,21 @@
   <!-- ADD CONTACT TAB -->
   <div id="tab-add" class="card">
     <div class="form-grid">
-      <div><label>Full name *</label><input id="f-name" type="text" placeholder="e.g. Sarah Chen"></div>
-      <div><label>Email</label><input id="f-email" type="email" placeholder="sarah@company.com"></div>
+      <div><label>A · Full name *</label><input id="f-name" type="text" placeholder="e.g. Sarah Chen"></div>
+      <div><label>B · Organisation</label><input id="f-company" type="text" placeholder="e.g. Acme Corp"></div>
     </div>
     <div class="form-grid">
-      <div><label>Phone</label><input id="f-phone" type="text" placeholder="+44 7700 000000"></div>
-      <div><label>Company</label><input id="f-company" type="text" placeholder="Company Ltd"></div>
+      <div><label>C · Role / Title</label><input id="f-title" type="text" placeholder="e.g. Head of L&D"></div>
+      <div><label>D · Sector</label><input id="f-sector" type="text" placeholder="e.g. Healthcare / AI"></div>
     </div>
     <div class="form-grid">
-      <div><label>Job title</label><input id="f-title" type="text" placeholder="e.g. Head of L&D"></div>
-      <div><label>LinkedIn URL</label><input id="f-linkedin" type="text" placeholder="linkedin.com/in/..."></div>
+      <div><label>E · Email</label><input id="f-email" type="email" placeholder="sarah@company.com"></div>
+      <div><label>F · LinkedIn</label><input id="f-linkedin" type="text" placeholder="linkedin.com/in/..."></div>
     </div>
     <div class="form-grid">
-      <div>
-        <label>Source</label>
-        <select id="f-source">
+      <div><label>G · Website</label><input id="f-website" type="text" placeholder="e.g. company.com"></div>
+      <div><label>H · Source</label>
+        <select id="f-source" style="width:100%;box-sizing:border-box">
           <option value="">Select source</option>
           <option>Colleague contact</option>
           <option>Business card</option>
@@ -82,18 +82,9 @@
           <option>Website sign-up</option>
         </select>
       </div>
-      <div>
-        <label>Classification</label>
-        <select id="f-classification">
-          <option value="pending">Unclassified — decide later</option>
-          <option value="client">Client — likely to buy training</option>
-          <option value="trainer">Trainer — could deliver sessions</option>
-          <option value="neither">General — keep warm</option>
-        </select>
-      </div>
     </div>
     <div style="margin-bottom:12px">
-      <label>Notes</label>
+      <label>K · Notes</label>
       <input id="f-notes" type="text" placeholder="Any context from the event...">
     </div>
     <button class="btn btn-primary btn-full" onclick="addContact()">Save contact</button>
@@ -135,23 +126,17 @@
         <div><label>Email</label><input id="cf-email" type="email"></div>
       </div>
       <div class="form-grid">
-        <div><label>Phone</label><input id="cf-phone" type="text"></div>
-        <div><label>Company</label><input id="cf-company" type="text"></div>
+                <div><label>Company</label><input id="cf-company" type="text"></div>
       </div>
       <div class="form-grid">
         <div><label>Job title</label><input id="cf-title" type="text"></div>
         <div><label>LinkedIn URL</label><input id="cf-linkedin" type="text"></div>
       </div>
       <div class="form-grid">
-        <div>
-          <label>Classification</label>
-          <select id="cf-classification">
-            <option value="pending">Unclassified — decide later</option>
-            <option value="client">Client — likely to buy training</option>
-            <option value="trainer">Trainer — could deliver sessions</option>
-            <option value="neither">General — keep warm</option>
-          </select>
-        </div>
+        <div><label>Sector</label><input id="cf-sector" type="text" placeholder="e.g. Healthcare / AI"></div>
+        <div><label>Website</label><input id="cf-website" type="text" placeholder="e.g. company.com"></div>
+      </div>
+      <div class="form-grid">
         <div><label>Notes</label><input id="cf-notes" type="text" placeholder="Any context..."></div>
       </div>
       <button class="btn btn-primary btn-full" onclick="confirmCardContact()">Save contact</button>
@@ -180,9 +165,14 @@
       <div style="margin-bottom:12px">
         <label>Which row do the column headers start on?</label>
         <select id="imp-header-row" style="width:100%">
-          <option value="1">Row 1 (most common)</option>
+                    <option value="1">Row 1</option>
           <option value="2">Row 2</option>
           <option value="3">Row 3</option>
+          <option value="4">Row 4</option>
+          <option value="5">Row 5</option>
+          <option value="6">Row 6</option>
+          <option value="7">Row 7</option>
+          <option value="8">Row 8</option>
         </select>
       </div>
       <button class="btn btn-primary" onclick="previewImport()"><span class="spinner" id="imp-spin" style="display:none"></span>Preview contacts</button>
@@ -205,14 +195,17 @@
 
     <div style="border-top:0.5px solid #e0dfd7;padding-top:16px;margin-top:16px">
       <p style="font-size:14px;font-weight:500;margin-bottom:8px">Column mapping</p>
-      <p style="font-size:13px;color:#888780;margin-bottom:12px">Tell the agent which columns in the source sheet match which fields. Leave blank to skip a field.</p>
+      <p style="font-size:13px;color:#888780;margin-bottom:12px">Pre-filled to match your NobleCamps sheet columns. Adjust if a colleague's sheet uses different column names.</p>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-        <div><label>Full name column</label><input id="map-name" type="text" placeholder="e.g. A or Name"></div>
-        <div><label>Email column</label><input id="map-email" type="text" placeholder="e.g. B or Email"></div>
-        <div><label>Phone column</label><input id="map-phone" type="text" placeholder="e.g. C or Phone"></div>
-        <div><label>Company column</label><input id="map-company" type="text" placeholder="e.g. D or Company"></div>
-        <div><label>Job title column</label><input id="map-title" type="text" placeholder="e.g. E or Title"></div>
-        <div><label>LinkedIn column</label><input id="map-linkedin" type="text" placeholder="e.g. F or LinkedIn"></div>
+        <div><label>A · Full name column</label><input id="map-name" type="text" placeholder="e.g. Name" value="Name"></div>
+        <div><label>B · Organisation column</label><input id="map-company" type="text" placeholder="e.g. Organisation" value="Organisation"></div>
+        <div><label>C · Role / Title column</label><input id="map-title" type="text" placeholder="e.g. Role / Title" value="Role / Title"></div>
+        <div><label>D · Sector column</label><input id="map-sector" type="text" placeholder="e.g. Sector" value="Sector"></div>
+        <div><label>E · Email column</label><input id="map-email" type="text" placeholder="e.g. Email" value="Email"></div>
+        <div><label>F · LinkedIn column</label><input id="map-linkedin" type="text" placeholder="e.g. LinkedIn" value="LinkedIn"></div>
+        <div><label>G · Website column</label><input id="map-website" type="text" placeholder="e.g. Website" value="Website"></div>
+        <div><label>H · Source column</label><input id="map-source" type="text" placeholder="e.g. Source" value="Source"></div>
+        <div><label>K · Notes column</label><input id="map-notes" type="text" placeholder="e.g. Notes" value="Notes"></div>
       </div>
       <p style="font-size:11px;color:#B4B2A9;margin-top:8px">Leave all blank to auto-detect columns by header name.</p>
     </div>
@@ -225,7 +218,7 @@
       <p>Connect to your shared Google Sheet so contacts sync automatically.</p>
       <div style="margin-bottom:12px">
         <label>Google Sheet ID</label>
-        <input id="cfg-sheet-id" type="text" placeholder="1j4XSeWuLH29fE3mcL6B_NN3KjyRszwAb">
+        <input id="cfg-sheet-id" type="text" placeholder="1moyxhYXsWsiB5EjYUccgtDpg34kD6ayOoBgxp8xj9L8" value="1moyxhYXsWsiB5EjYUccgtDpg34kD6ayOoBgxp8xj9L8">
       </div>
       <div style="margin-bottom:12px">
         <label>Service account credentials (JSON)</label>
@@ -263,7 +256,9 @@
 </div>
 
 <script>
-const DEFAULT_SHEET_ID = '1j4XSeWuLH29fE3mcL6B_NN3KjyRszwAb';
+const DEFAULT_SHEET_ID = '1moyxhYXsWsiB5EjYUccgtDpg34kD6ayOoBgxp8xj9L8';
+const DEFAULT_SHEET_TAB = 'Pre-Event Potential Attendees';
+const HEADER_ROW = 4; // headers on row 4, data from row 5
 let contacts = [];
 let nextId = 1;
 let currentFilter = 'all';
@@ -339,10 +334,11 @@ function addContact() {
   const c = {
     id: nextId++, name,
     email: document.getElementById('f-email').value.trim(),
-    phone: document.getElementById('f-phone').value.trim(),
     company: document.getElementById('f-company').value.trim(),
     title: document.getElementById('f-title').value.trim(),
     linkedin: document.getElementById('f-linkedin').value.trim(),
+    sector: document.getElementById('f-sector').value.trim(),
+    website: document.getElementById('f-website').value.trim(),
     source: document.getElementById('f-source').value,
     classification: document.getElementById('f-classification').value,
     notes: document.getElementById('f-notes').value.trim(),
@@ -350,10 +346,12 @@ function addContact() {
     dateAdded: new Date().toLocaleDateString('en-GB')
   };
   contacts.push(c); persistContacts(); updateMetrics();
-  ['f-name','f-email','f-phone','f-company','f-title','f-linkedin','f-notes'].forEach(id => document.getElementById(id).value = '');
+  // Auto sync to Google Sheet
+  syncContactToSheet(c);
+  ['f-name','f-email','f-company','f-title','f-linkedin','f-sector','f-website','f-notes'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('f-source').value = '';
   document.getElementById('f-classification').value = 'pending';
-  showFeedback('add-feedback', `${c.name} added successfully.`, true);
+  showFeedback('add-feedback', `${c.name} saved and syncing to Google Sheet...`, true);
 }
 
 function handleCardUpload(e) { const f = e.target.files[0]; if (f) loadCardFile(f); }
@@ -416,21 +414,22 @@ function confirmCardContact() {
   const c = {
     id: nextId++, name,
     email: document.getElementById('cf-email').value.trim(),
-    phone: document.getElementById('cf-phone').value.trim(),
     company: document.getElementById('cf-company').value.trim(),
     title: document.getElementById('cf-title').value.trim(),
     linkedin: document.getElementById('cf-linkedin').value.trim(),
+    sector: document.getElementById('cf-sector').value.trim(),
+    website: document.getElementById('cf-website').value.trim(),
     source: 'Business card',
-    classification: document.getElementById('cf-classification').value,
+    classification: 'pending',
     notes: document.getElementById('cf-notes').value.trim(),
     reason: '', synced: false,
     dateAdded: new Date().toLocaleDateString('en-GB')
   };
   contacts.push(c); persistContacts(); updateMetrics();
-  ['cf-name','cf-email','cf-phone','cf-company','cf-title','cf-linkedin','cf-notes'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('cf-classification').value = 'pending';
+  syncContactToSheet(c);
+  ['cf-name','cf-email','cf-company','cf-title','cf-linkedin','cf-sector','cf-website','cf-notes'].forEach(id => document.getElementById(id).value = '');
   resetCard();
-  showFeedback('card-feedback', `${c.name} added successfully.`, true);
+  showFeedback('card-feedback', `${c.name} saved and syncing to Google Sheet...`, true);
 }
 
 async function getAccessToken(creds) {
@@ -476,9 +475,23 @@ async function syncToSheets() {
       statusEl.style.background = '#E1F5EE'; statusEl.style.color = '#085041'; return;
     }
     msgEl.textContent = `Syncing ${unsynced.length} contact(s)...`;
-    const rows = unsynced.map(c => [c.id, c.name, c.email, c.phone, c.company, c.title, c.linkedin, c.source, c.dateAdded, c.classification, c.reason, c.notes]);
+    // Map to sheet columns: A=Name, B=Organisation, C=Role/Title, D=Sector, E=Email, F=LinkedIn, G=Website, H=Source, I=Outreach Status, J=Registration Status, K=Notes
+    const rows = unsynced.map(c => [
+      c.name,           // A - Name
+      c.company,        // B - Organisation
+      c.title,          // C - Role/Title
+      c.sector || '',   // D - Sector
+      c.email,          // E - Email
+      c.linkedin,       // F - LinkedIn
+      c.website || '',  // G - Website
+      c.source,         // H - Source
+      c.outreachStatus || 'Not Contacted',  // I - Outreach Status
+      c.registrationStatus || 'Not Registered', // J - Registration Status
+      c.notes           // K - Notes
+    ]);
+    const tabName = encodeURIComponent(DEFAULT_SHEET_TAB);
     const resp = await fetch(
-      `https://sheets.googleapis.com/v4/spreadsheets/${getSheetId()}/values/A:L:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`,
+      `https://sheets.googleapis.com/v4/spreadsheets/${getSheetId()}/values/${tabName}!A:K:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`,
       { method: 'POST', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ values: rows }) }
     );
@@ -501,7 +514,7 @@ async function testConnection() {
   document.getElementById('test-spin').style.display = 'inline-block';
   try {
     const token = await getAccessToken(creds);
-    const resp = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${getSheetId()}?fields=properties.title`,
+    const resp = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${getSheetId()}?fields=properties.title,sheets.properties`,
       { headers: { 'Authorization': `Bearer ${token}` } });
     const data = await resp.json();
     if (data.error) throw new Error(data.error.message);
@@ -512,6 +525,29 @@ async function testConnection() {
 
 
 
+
+
+// Auto-sync a single contact immediately when added
+async function syncContactToSheet(c) {
+  const creds = getCreds();
+  if (!creds) return; // silently skip if not configured
+  try {
+    const token = await getAccessToken(creds);
+    const row = [
+      c.name, c.company, c.title, c.sector||'', c.email,
+      c.linkedin, c.website||'', c.source,
+      'Not Contacted', 'Not Registered', c.notes
+    ];
+    const tabName = encodeURIComponent(DEFAULT_SHEET_TAB);
+    const resp = await fetch(
+      `https://sheets.googleapis.com/v4/spreadsheets/${getSheetId()}/values/${tabName}!A:K:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`,
+      { method: 'POST', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ values: [row] }) }
+    );
+    const data = await resp.json();
+    if (!data.error) { c.synced = true; persistContacts(); }
+  } catch(e) { console.log('Auto-sync failed:', e.message); }
+}
 
 // ── Import from colleague Google Sheet ────────────────────────────────────────
 let importedRows = [];
@@ -580,8 +616,10 @@ async function previewImport() {
     const companyIdx = getColIndex(importedHeaders, document.getElementById('map-company').value, ['company','organisation','organization','employer']);
     const titleIdx   = getColIndex(importedHeaders, document.getElementById('map-title').value,   ['job title','title','role','position']);
     const linkedinIdx= getColIndex(importedHeaders, document.getElementById('map-linkedin').value,['linkedin','linked in']);
+    const sectorIdx  = getColIndex(importedHeaders, document.getElementById('map-sector').value,  ['sector','industry','field']);
+    const websiteIdx = getColIndex(importedHeaders, document.getElementById('map-website').value,  ['website','web','url','site']);
 
-    window._importMap = { nameIdx, emailIdx, phoneIdx, companyIdx, titleIdx, linkedinIdx };
+    window._importMap = { nameIdx, emailIdx, companyIdx, titleIdx, linkedinIdx, sectorIdx, websiteIdx };
 
     const previews = importedRows.slice(0, 50).map(row => ({
       name:     nameIdx    >= 0 ? (row[nameIdx]    || '') : '',
@@ -638,9 +676,13 @@ async function confirmImport() {
   // Write directly to NobleCamps master sheet
   try {
     const token = await getAccessToken(creds);
-    const rows = newContacts.map(c => [c.id, c.name, c.email, c.phone, c.company, c.title, c.linkedin, c.source, c.dateAdded, c.classification, c.reason, c.notes]);
+    const rows = newContacts.map(c => [
+      c.name, c.company, c.title, c.sector||'', c.email,
+      c.linkedin, c.website||'', c.source,
+      'Not Contacted', 'Not Registered', c.notes
+    ]);
     const resp = await fetch(
-      `https://sheets.googleapis.com/v4/spreadsheets/${getSheetId()}/values/A:L:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`,
+      `https://sheets.googleapis.com/v4/spreadsheets/${getSheetId()}/values/${encodeURIComponent(DEFAULT_SHEET_TAB)}!A:K:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`,
       { method: 'POST', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ values: rows }) }
     );
