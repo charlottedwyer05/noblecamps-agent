@@ -119,6 +119,42 @@
       </div>
     </div>
 
+    <div id="card-form-wrap" style="display:none;margin-top:16px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+        <i class="ti ti-check" style="color:#5b011b;font-size:16px"></i>
+        <p style="margin:0;font-size:14px;font-weight:500">Details extracted — review and confirm</p>
+      </div>
+      <div class="form-grid">
+        <div><label>A · Full name</label><input id="cf-name" type="text"></div>
+        <div><label>B · Organisation</label><input id="cf-company" type="text"></div>
+      </div>
+      <div class="form-grid">
+        <div><label>C · Role / Title</label><input id="cf-title" type="text"></div>
+        <div><label>D · Sector</label><input id="cf-sector" type="text"></div>
+      </div>
+      <div class="form-grid">
+        <div><label>E · Email</label><input id="cf-email" type="email"></div>
+        <div><label>F · LinkedIn</label><input id="cf-linkedin" type="text"></div>
+      </div>
+      <div class="form-grid">
+        <div><label>G · Website</label><input id="cf-website" type="text"></div>
+        <div><label>H · Source</label>
+          <select id="cf-source" style="width:100%;box-sizing:border-box">
+            <option value="Business card">Business card</option>
+            <option>Colleague contact</option>
+            <option>LinkedIn</option>
+            <option>Website sign-up</option>
+          </select>
+        </div>
+      </div>
+      <div style="margin-bottom:12px">
+        <label>K · Notes</label>
+        <input id="cf-notes" type="text" placeholder="Any context from the event...">
+      </div>
+      <button class="btn btn-primary btn-full" onclick="confirmCardContact()">Save contact</button>
+      <div class="feedback" id="card-feedback"></div>
+    </div>
+
     <div style="margin-top:16px;border-top:0.5px solid #e0dfd7;padding-top:16px">
       <p style="font-size:13px;font-weight:500;margin-bottom:12px;color:#5F5E5A">Or enter details manually from the card:</p>
       <div class="form-grid">
@@ -268,12 +304,19 @@ let config = {};
 
 function loadConfig() {
   try {
-    config = JSON.parse(localStorage.getItem('nc_config') || '{}');
-    if (config.sheetId) document.getElementById('cfg-sheet-id').value = config.sheetId;
-    if (config.creds) document.getElementById('cfg-creds').value = JSON.stringify(config.creds, null, 2);
-    if (config.apiKey) document.getElementById('cfg-api-key').value = config.apiKey;
-    if (config.contacts) { contacts = config.contacts; nextId = contacts.length ? Math.max(...contacts.map(c=>c.id)) + 1 : 1; }
-  } catch(e) {}
+    const saved = JSON.parse(localStorage.getItem('nc_config') || '{}');
+    const defaultCreds = JSON.parse(atob('eyJ0eXBlIjogInNlcnZpY2VfYWNjb3VudCIsICJwcm9qZWN0X2lkIjogIm5vYmxlY2FtcHMtZXZlbnRzLWFnZW50IiwgInByaXZhdGVfa2V5X2lkIjogIjM1YjY1MzI2Yjg2MWUyNjc2OTI4MjMxNjExNWY0NDY1OWJhYWVlZjIiLCAicHJpdmF0ZV9rZXkiOiAiLS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tXG5NSUlFdkFJQkFEQU5CZ2txaGtpRzl3MEJBUUVGQUFTQ0JLWXdnZ1NpQWdFQUFvSUJBUUNnWG1HdllBRUJ6eWNxXG44WVZRNXhMT2dlTmFxQlBOWHVzUXVjM1crbkRFS1ZvTGxaSUNhVjg1YlZHd2NCdkRVL1NwMUlBZnZ4K1ZXQnRYXG5vVzViUzRGcDZMZnhRbWNTbXgwOHFXd3Y2TGE1bFF2RE9BRWdCdWdEcVM2Mmtma3dpYlJrSWo1dENKVnF1Z0h3XG51Q2pNR3R0d3J5Tk54NjdUbEFEZklmYURmWkV1eEpWaFNOWVpCUVZmTXFDa2dzdzBJeXEwS3cwd092T0F4MlpMXG5zK3RMYzJHVkpKUkd5VlNvYWJMKzkzaEVkc3RncmVTQVBldjlsc2NWMHZWeXdzT2JIUWRlQ1l6YkV1dUh4VTlQXG5sQ1RlTDV3c0NzYlBOeVdzdW95c2FpUmtqWjVBanhxZ0ppTXdlWVlrZHRVTGJ2RHQ2RkFKMHNXR3pwN1dIZVVIXG4wNzM3UUxkWkFnTUJBQUVDZ2dFQUg2VUFHWjhVRTh0UXEwU2xUZVdLN0h6czVBS3VoYVBwTm8remNteFF2Q1I4XG54RFJyYjFaamwrMWVaVFo2QS8wWkZqbjhYa2RVY0IvR3BYQVJXcXAzaXZLRStYSms3R0wzVGZVUWlCT2ZtdGN5XG5UdjlLR1l2RFZKV1p4aVRmeXhnaEpIRXRhRTU5VFdZTzQvVXk5N09GQWFOTmtCZUxBK3o4andzZ25hbTFjRWpDXG5TaFRqbDE5SGlRS0FQa3ozK250VUN5U244bzNNMVM3QUZzSUEvOXNoK2h2dXdveEpkMXVWZ2xWMU9sZXBRNUN3XG5GcUU0Ykh3VHlNeTlicFlxMmJiM2QwQjRYR3p3YWxwZHpFajhGNVNlRmcwRHNaRGp2cEZrQXNwUEorSi9mTmQvXG5mNUh4SmN5QWM2dmNrdkJvSEtVek4yVWNZWkdhNEMyM2FyUEtJd1RVa1FLQmdRREx6K09odGh4bkNDQWNuK0R4XG4zcEFDYU1vVFBaeGd2ZXRsL09PODBRRW9HRnJKenAvOFowWi9LcUMvMVhlUFp0dVNCTVJFSHg5WDROaW5za3FlXG5rSzdBQ1Q4c01VSEVqUU5TN3lzWFhOcllkbklIWmU5c01QMVpIaW9TZ01NckltZG5GMzRrRW85a2J2OUFsZ2JGXG4rb0lUd0FKQ1NCb0pScDRQTFlnMVVsU3V5d0tCZ1FESmJycXdpbkdNWEJtSnlGbURadG05TUlXVHZORzg2Q203XG44VlhaRk80d2crQi8xRm1STWNGUWlQb0JYWThlVENJNW9kcHZ4ZjByZk4yc29IeTFlVUJvZHhRR25UTjdQcVJlXG5SaVZEcDh6YVRaRkZHZGtBQytqY0RlMWRKbG54UlNJbTErUHNsOU1MZEhPSlpZMEJ3U3ZOQmhzdjVCU0x0Tnk1XG51L3ZIamhscDZ3S0JnRXJFaHZOS0JYMWVvN2tjaGI3MU1NdFJlZUE1RitiOWhSK3krRERLVTZ4TDB2SjVsSU5aXG50NmpyRUhHUGMvN3RjdHRNV0Z2Tk53aGIrZDc3THhpZ1p4c1h5VThDK3VlSis1QXZJUlcvQUtHc1FnU294bjVnXG5NbkRBK2hvemxtVjZoNGh3Tzl3cjJ1S3pQWHlLRFE0UDZpd29vaXVDbTlxUFIyaTJBV1BlUWlhbEFvR0FOdE9LXG53TzZOeFhSMEJ3cWZRcUxGOVRhMXhPYUo5KzhCSFFTdEp5OEpQZTlITmNQb3RScGowYlhXeG5SZXRoSm01bVRsXG5mYkxZRy9RYXFoZnNtY0J0QllJVDAxRUthQ3MrdGVKRjFrcGYrYk5QTFEzQ0FMODlIRmcyR1RxTkZKeUtsU1FDXG5CNjJ6WmRUR2RjbE1QZ1FFRmdQcGRubVFGZzZlWFhlTEtsL0ZEdzBDZ1lCNnlkZTBFazVXc2JUZ0FwVDBSUXYwXG5Vbk9yZ2d4VWFldWVJU09PeUY5VW1kSlJRcVU3eWhOV2hNL0dyZ0J5bHhrL2NRYmRRdjRmMTZ2NnBFZzdyZjAwXG5jdXhZRW8xSlNhTjJHOC9NTElDREJUdWtzRkxZdExJNmxZbGNqTHFEaEo4RkNnVFh4b3JPSTFVS01IdVIvQjJCXG55QnZzU08wWDNYZDJYalh6RkxUeTdRPT1cbi0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS1cbiIsICJjbGllbnRfZW1haWwiOiAibm9ibGVjYW1wcy1hZ2VudEBub2JsZWNhbXBzLWV2ZW50cy1hZ2VudC5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbSIsICJjbGllbnRfaWQiOiAiMTA5NDEyMzMwNzQ4Mjk4NzA2MDEzIiwgImF1dGhfdXJpIjogImh0dHBzOi8vYWNjb3VudHMuZ29vZ2xlLmNvbS9vL29hdXRoMi9hdXRoIiwgInRva2VuX3VyaSI6ICJodHRwczovL29hdXRoMi5nb29nbGVhcGlzLmNvbS90b2tlbiIsICJhdXRoX3Byb3ZpZGVyX3g1MDlfY2VydF91cmwiOiAiaHR0cHM6Ly93d3cuZ29vZ2xlYXBpcy5jb20vb2F1dGgyL3YxL2NlcnRzIiwgImNsaWVudF94NTA5X2NlcnRfdXJsIjogImh0dHBzOi8vd3d3Lmdvb2dsZWFwaXMuY29tL3JvYm90L3YxL21ldGFkYXRhL3g1MDkvbm9ibGVjYW1wcy1hZ2VudCU0MG5vYmxlY2FtcHMtZXZlbnRzLWFnZW50LmlhbS5nc2VydmljZWFjY291bnQuY29tIiwgInVuaXZlcnNlX2RvbWFpbiI6ICJnb29nbGVhcGlzLmNvbSJ9'));
+    config = {
+      sheetId: saved.sheetId || '1moyxhYXsWsiB5EjYUccgtDpg34kD6ayOoBgxp8xj9L8',
+      creds: saved.creds || defaultCreds,
+      apiKey: saved.apiKey || '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',
+      contacts: saved.contacts || []
+    };
+    document.getElementById('cfg-sheet-id').value = config.sheetId;
+    document.getElementById('cfg-creds').value = JSON.stringify(config.creds, null, 2);
+    document.getElementById('cfg-api-key').value = config.apiKey;
+    if (config.contacts.length) { contacts = config.contacts; nextId = Math.max(...contacts.map(c=>c.id)) + 1; }
+  } catch(e) { console.log('Config error:', e); }
 }
 
 
