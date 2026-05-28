@@ -97,7 +97,7 @@
       <i class="ti ti-info-circle" style="font-size:16px;color:#5b011b;flex-shrink:0;margin-top:1px"></i>
       <div>
         <p style="font-size:13px;font-weight:500;color:#5b011b;margin-bottom:2px">AI feature — requires Anthropic API key</p>
-        <p style="font-size:12px;color:#8b0129">Automatic card reading uses Claude AI (~1-2p per scan). Add your API key in Settings to unlock, or fill in the details manually below.</p>
+        <p style="font-size:12px;color:#8b0129">Automatic card reading uses Claude AI (~1-2p per scan). Add your API key in Settings to unlock.</p>
       </div>
     </div>
 
@@ -238,7 +238,7 @@
         <label>Anthropic API key</label>
         <input id="cfg-api-key" type="password" placeholder="sk-ant-...">
       </div>
-      <button class="btn btn-primary" onclick="saveConfig()">Save</button>
+      <button class="btn btn-primary" onclick="saveApiKey()">Save</button>
       <div class="feedback" id="ai-feedback"></div>
     </div>
 
@@ -274,6 +274,17 @@ function loadConfig() {
     if (config.apiKey) document.getElementById('cfg-api-key').value = config.apiKey;
     if (config.contacts) { contacts = config.contacts; nextId = contacts.length ? Math.max(...contacts.map(c=>c.id)) + 1 : 1; }
   } catch(e) {}
+}
+
+
+function saveApiKey() {
+  try {
+    config.apiKey = document.getElementById('cfg-api-key').value.trim();
+    localStorage.setItem('nc_config', JSON.stringify(config));
+    showFeedback('ai-feedback', 'API key saved.', true);
+  } catch(e) {
+    showFeedback('ai-feedback', 'Failed to save API key.', false);
+  }
 }
 
 function saveConfig() {
@@ -390,13 +401,14 @@ async function extractCard() {
   if (!apiKey) { alert('Add your Anthropic API key in Settings to use AI card scanning.'); return; }
   if (!cardImageBase64) return;
   document.getElementById('extract-spin').style.display = 'inline-block';
-  const prompt = `Extract contact details from this business card. Return ONLY valid JSON:
-{"name":"","email":"","phone":"","company":"","title":"","linkedin":""}`;
+  const prompt = `Extract contact details from this business card image. Return ONLY valid JSON with these exact keys (empty string if not found):
+{"name":"","company":"","title":"","sector":"","email":"","linkedin":"","website":""}
+No markdown, no explanation, just the JSON.`;
   try {
     const resp = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' },
-      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 300,
+      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 400,
         messages: [{ role: 'user', content: [
           { type: 'image', source: { type: 'base64', media_type: cardImageType, data: cardImageBase64 } },
           { type: 'text', text: prompt }
@@ -404,14 +416,18 @@ async function extractCard() {
       })
     });
     const data = await resp.json();
+    if (data.error) throw new Error(data.error.message);
     const text = data.content.map(i=>i.text||'').join('').replace(/```json|```/g,'').trim();
     const ex = JSON.parse(text);
     document.getElementById('cf-name').value = ex.name || '';
-    document.getElementById('cf-email').value = ex.email || '';
-    document.getElementById('cf-phone').value = ex.phone || '';
     document.getElementById('cf-company').value = ex.company || '';
     document.getElementById('cf-title').value = ex.title || '';
-  } catch(e) { alert('Extraction failed. Check your API key in Settings.'); }
+    document.getElementById('cf-sector').value = ex.sector || '';
+    document.getElementById('cf-email').value = ex.email || '';
+    document.getElementById('cf-linkedin').value = ex.linkedin || '';
+    document.getElementById('cf-website').value = ex.website || '';
+    document.getElementById('card-form-wrap').style.display = 'block';
+  } catch(e) { alert('Extraction failed: ' + e.message); }
   document.getElementById('extract-spin').style.display = 'none';
 }
 
@@ -669,17 +685,24 @@ async function confirmImport() {
   if (!creds) return;
   document.getElementById('imp-confirm-spin').style.display = 'inline-block';
   const m = window._importMap;
-  const newContacts = importedRows.map(row => ({
-    id: nextId++,
-    name:     m.nameIdx    >= 0 ? (row[m.nameIdx]    || '') : '',
-    email:    m.emailIdx   >= 0 ? (row[m.emailIdx]   || '') : '',
-    company:  m.companyIdx >= 0 ? (row[m.companyIdx] || '') : '',
-    title:    m.titleIdx   >= 0 ? (row[m.titleIdx]   || '') : '',
-    linkedin: m.linkedinIdx>= 0 ? (row[m.linkedinIdx]|| '') : '',
-    source: 'Colleague import', classification: 'pending',
-    reason: '', synced: false,
-    dateAdded: new Date().toLocaleDateString('en-GB')
-  })).filter(c => c.name || c.email);
+  const newContacts = importedRows.map(row => {
+    const notes = m.notesIdx >= 0 ? (row[m.notesIdx] || '') : '';
+    console.log('notesIdx:', m.notesIdx, 'notes value:', notes, 'row:', row);
+    return {
+      id: nextId++,
+      name:     m.nameIdx    >= 0 ? (row[m.nameIdx]    || '') : '',
+      email:    m.emailIdx   >= 0 ? (row[m.emailIdx]   || '') : '',
+      company:  m.companyIdx >= 0 ? (row[m.companyIdx] || '') : '',
+      title:    m.titleIdx   >= 0 ? (row[m.titleIdx]   || '') : '',
+      linkedin: m.linkedinIdx>= 0 ? (row[m.linkedinIdx]|| '') : '',
+      sector:   m.sectorIdx  >= 0 ? (row[m.sectorIdx]  || '') : '',
+      website:  m.websiteIdx >= 0 ? (row[m.websiteIdx] || '') : '',
+      notes:    notes,
+      source: 'Colleague import', classification: 'pending',
+      reason: '', synced: false,
+      dateAdded: new Date().toLocaleDateString('en-GB')
+    };
+  }).filter(c => c.name || c.email);
 
   contacts.push(...newContacts);
   persistContacts();
