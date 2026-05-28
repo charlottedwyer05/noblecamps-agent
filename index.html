@@ -492,8 +492,8 @@ async function syncToSheets() {
       c.linkedin,       // F - LinkedIn
       c.website || '',  // G - Website
       c.source,         // H - Source
-      c.outreachStatus || 'Not Contacted',  // I - Outreach Status
-      c.registrationStatus || 'Not Registered', // J - Registration Status
+      '', // I - Outreach Status (filled manually)
+      '', // J - Registration Status (filled manually)
       c.notes           // K - Notes
     ]);
     const tabName = encodeURIComponent(DEFAULT_SHEET_TAB);
@@ -546,7 +546,7 @@ async function syncContactToSheet(c, feedbackId) {
     const row = [
       c.name, c.company, c.title, c.sector||'', c.email,
       c.linkedin, c.website||'', c.source,
-      'Not Contacted', 'Not Registered', c.notes
+      '', '', c.notes
     ];
     const tabName = encodeURIComponent(DEFAULT_SHEET_TAB);
     const resp = await fetch(
@@ -693,7 +693,7 @@ async function confirmImport() {
     const rows = newContacts.map(c => [
       c.name, c.company, c.title, c.sector||'', c.email,
       c.linkedin, c.website||'', c.source,
-      'Not Contacted', 'Not Registered', c.notes
+      '', '', c.notes
     ]);
     const resp = await fetch(
       `https://sheets.googleapis.com/v4/spreadsheets/${getSheetId()}/values/${encodeURIComponent(DEFAULT_SHEET_TAB)}!A5:K:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`,
