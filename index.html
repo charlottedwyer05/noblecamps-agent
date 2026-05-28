@@ -637,7 +637,6 @@ async function previewImport() {
     const previews = importedRows.slice(0, 50).map(row => ({
       name:     nameIdx    >= 0 ? (row[nameIdx]    || '') : '',
       email:    emailIdx   >= 0 ? (row[emailIdx]   || '') : '',
-      phone:    phoneIdx   >= 0 ? (row[phoneIdx]   || '') : '',
       company:  companyIdx >= 0 ? (row[companyIdx] || '') : '',
       title:    titleIdx   >= 0 ? (row[titleIdx]   || '') : '',
       linkedin: linkedinIdx>= 0 ? (row[linkedinIdx]|| '') : '',
@@ -673,7 +672,6 @@ async function confirmImport() {
     id: nextId++,
     name:     m.nameIdx    >= 0 ? (row[m.nameIdx]    || '') : '',
     email:    m.emailIdx   >= 0 ? (row[m.emailIdx]   || '') : '',
-    phone:    m.phoneIdx   >= 0 ? (row[m.phoneIdx]   || '') : '',
     company:  m.companyIdx >= 0 ? (row[m.companyIdx] || '') : '',
     title:    m.titleIdx   >= 0 ? (row[m.titleIdx]   || '') : '',
     linkedin: m.linkedinIdx>= 0 ? (row[m.linkedinIdx]|| '') : '',
