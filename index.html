@@ -340,18 +340,17 @@ function addContact() {
     sector: document.getElementById('f-sector').value.trim(),
     website: document.getElementById('f-website').value.trim(),
     source: document.getElementById('f-source').value,
-    classification: document.getElementById('f-classification').value,
+    classification: 'pending',
     notes: document.getElementById('f-notes').value.trim(),
     reason: '', synced: false,
     dateAdded: new Date().toLocaleDateString('en-GB')
   };
   contacts.push(c); persistContacts(); updateMetrics();
   // Auto sync to Google Sheet
-  syncContactToSheet(c);
+  syncContactToSheet(c, 'add-feedback');
   ['f-name','f-email','f-company','f-title','f-linkedin','f-sector','f-website','f-notes'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('f-source').value = '';
-  document.getElementById('f-classification').value = 'pending';
-  showFeedback('add-feedback', `${c.name} saved and syncing to Google Sheet...`, true);
+
 }
 
 function handleCardUpload(e) { const f = e.target.files[0]; if (f) loadCardFile(f); }
@@ -426,10 +425,10 @@ function confirmCardContact() {
     dateAdded: new Date().toLocaleDateString('en-GB')
   };
   contacts.push(c); persistContacts(); updateMetrics();
-  syncContactToSheet(c);
+  syncContactToSheet(c, 'card-feedback');
   ['cf-name','cf-email','cf-company','cf-title','cf-linkedin','cf-sector','cf-website','cf-notes'].forEach(id => document.getElementById(id).value = '');
   resetCard();
-  showFeedback('card-feedback', `${c.name} saved and syncing to Google Sheet...`, true);
+
 }
 
 async function getAccessToken(creds) {
@@ -528,9 +527,12 @@ async function testConnection() {
 
 
 // Auto-sync a single contact immediately when added
-async function syncContactToSheet(c) {
+async function syncContactToSheet(c, feedbackId) {
   const creds = getCreds();
-  if (!creds) return; // silently skip if not configured
+  if (!creds) {
+    if (feedbackId) showFeedback(feedbackId, 'Saved locally — add credentials in Settings to sync to Google Sheet.', false);
+    return;
+  }
   try {
     const token = await getAccessToken(creds);
     const row = [
@@ -545,8 +547,12 @@ async function syncContactToSheet(c) {
         body: JSON.stringify({ values: [row] }) }
     );
     const data = await resp.json();
-    if (!data.error) { c.synced = true; persistContacts(); }
-  } catch(e) { console.log('Auto-sync failed:', e.message); }
+    if (data.error) throw new Error(data.error.message);
+    c.synced = true; persistContacts();
+    if (feedbackId) showFeedback(feedbackId, `${c.name} saved and synced to Google Sheet successfully.`, true);
+  } catch(e) {
+    if (feedbackId) showFeedback(feedbackId, `Saved locally but sync failed: ${e.message}`, false);
+  }
 }
 
 // ── Import from colleague Google Sheet ────────────────────────────────────────
