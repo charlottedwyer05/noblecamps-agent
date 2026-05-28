@@ -491,7 +491,7 @@ async function syncToSheets() {
     ]);
     const tabName = encodeURIComponent(DEFAULT_SHEET_TAB);
     const resp = await fetch(
-      `https://sheets.googleapis.com/v4/spreadsheets/${getSheetId()}/values/${tabName}!A:K:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`,
+      `https://sheets.googleapis.com/v4/spreadsheets/${getSheetId()}/values/${tabName}!A5:K:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`,
       { method: 'POST', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ values: rows }) }
     );
@@ -540,7 +540,7 @@ async function syncContactToSheet(c) {
     ];
     const tabName = encodeURIComponent(DEFAULT_SHEET_TAB);
     const resp = await fetch(
-      `https://sheets.googleapis.com/v4/spreadsheets/${getSheetId()}/values/${tabName}!A:K:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`,
+      `https://sheets.googleapis.com/v4/spreadsheets/${getSheetId()}/values/${tabName}!A5:K:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`,
       { method: 'POST', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ values: [row] }) }
     );
@@ -682,7 +682,7 @@ async function confirmImport() {
       'Not Contacted', 'Not Registered', c.notes
     ]);
     const resp = await fetch(
-      `https://sheets.googleapis.com/v4/spreadsheets/${getSheetId()}/values/${encodeURIComponent(DEFAULT_SHEET_TAB)}!A:K:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`,
+      `https://sheets.googleapis.com/v4/spreadsheets/${getSheetId()}/values/${encodeURIComponent(DEFAULT_SHEET_TAB)}!A5:K:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`,
       { method: 'POST', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ values: rows }) }
     );
