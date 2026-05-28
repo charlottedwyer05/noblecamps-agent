@@ -631,8 +631,9 @@ async function previewImport() {
     const linkedinIdx= getColIndex(importedHeaders, document.getElementById('map-linkedin').value,['linkedin','linked in']);
     const sectorIdx  = getColIndex(importedHeaders, document.getElementById('map-sector').value,  ['sector','industry','field']);
     const websiteIdx = getColIndex(importedHeaders, document.getElementById('map-website').value,  ['website','web','url','site']);
+    const notesIdx   = getColIndex(importedHeaders, document.getElementById('map-notes').value,   ['notes','comments','remarks','note']);
 
-    window._importMap = { nameIdx, emailIdx, companyIdx, titleIdx, linkedinIdx, sectorIdx, websiteIdx };
+    window._importMap = { nameIdx, emailIdx, companyIdx, titleIdx, linkedinIdx, sectorIdx, websiteIdx, notesIdx };
 
     const previews = importedRows.slice(0, 50).map(row => ({
       name:     nameIdx    >= 0 ? (row[nameIdx]    || '') : '',
@@ -676,7 +677,7 @@ async function confirmImport() {
     title:    m.titleIdx   >= 0 ? (row[m.titleIdx]   || '') : '',
     linkedin: m.linkedinIdx>= 0 ? (row[m.linkedinIdx]|| '') : '',
     source: 'Colleague import', classification: 'pending',
-    reason: '', notes: '', synced: false,
+    reason: '', synced: false,
     dateAdded: new Date().toLocaleDateString('en-GB')
   })).filter(c => c.name || c.email);
 
