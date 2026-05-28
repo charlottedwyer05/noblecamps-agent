@@ -328,9 +328,14 @@ function showFeedback(id, msg, success) {
   if (success) setTimeout(() => el.textContent = '', 4000);
 }
 
-function addContact() {
+async function addContact() {
   const name = document.getElementById('f-name').value.trim();
   if (!name) { showFeedback('add-feedback', 'Name is required.', false); return; }
+  
+  const btn = document.querySelector('#tab-add .btn-primary');
+  btn.textContent = 'Saving...';
+  btn.disabled = true;
+
   const c = {
     id: nextId++, name,
     email: document.getElementById('f-email').value.trim(),
@@ -345,12 +350,15 @@ function addContact() {
     reason: '', synced: false,
     dateAdded: new Date().toLocaleDateString('en-GB')
   };
+
   contacts.push(c); persistContacts(); updateMetrics();
-  // Auto sync to Google Sheet
-  syncContactToSheet(c, 'add-feedback');
+  await syncContactToSheet(c, 'add-feedback');
+  
   ['f-name','f-email','f-company','f-title','f-linkedin','f-sector','f-website','f-notes'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('f-source').value = '';
 
+  btn.textContent = 'Save contact';
+  btn.disabled = false;
 }
 
 function handleCardUpload(e) { const f = e.target.files[0]; if (f) loadCardFile(f); }
