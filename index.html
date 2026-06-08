@@ -93,12 +93,6 @@
 
   <!-- BUSINESS CARD TAB -->
   <div id="tab-card" class="card" style="display:none">
-    <div class="ai-banner">
-      <i class="ti ti-info-circle" style="font-size:16px;color:#5b011b;flex-shrink:0;margin-top:1px"></i>
-      <div>
-        <p style="font-size:13px;font-weight:500;color:#5b011b;margin-bottom:2px">AI feature — requires Anthropic API key</p>
-        <p style="font-size:12px;color:#8b0129">Automatic card reading uses Claude AI (~1-2p per scan). Add your API key in Settings to unlock.</p>
-      </div>
     </div>
 
     <div class="drop-zone" id="drop-zone" onclick="document.getElementById('card-input').click()"
@@ -440,8 +434,6 @@ function resetCard() {
 }
 
 async function extractCard() {
-  const apiKey = getApiKey();
-  if (!apiKey) { alert('Add your Anthropic API key in Settings to use AI card scanning.'); return; }
   if (!cardImageBase64) return;
   document.getElementById('extract-spin').style.display = 'inline-block';
   const prompt = `Extract contact details from this business card image. Return ONLY valid JSON with these exact keys (empty string if not found):
