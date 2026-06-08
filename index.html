@@ -443,7 +443,7 @@ No markdown, no explanation, just the JSON.`;
     const resp = await fetch('/.netlify/functions/claude-proxy', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 400,
+      body: JSON.stringify({ model: 'claude-opus-4-5', max_tokens: 400,
         messages: [{ role: 'user', content: [
           { type: 'image', source: { type: 'base64', media_type: cardImageType, data: cardImageBase64 } },
           { type: 'text', text: prompt }
