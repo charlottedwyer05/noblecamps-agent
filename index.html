@@ -243,7 +243,7 @@
       <p>Connect to your shared Google Sheet so contacts sync automatically.</p>
       <div style="margin-bottom:12px">
         <label>Google Sheet ID</label>
-        <input id="cfg-sheet-id" type="text" placeholder="1moyxhYXsWsiB5EjYUccgtDpg34kD6ayOoBgxp8xj9L8" value="1moyxhYXsWsiB5EjYUccgtDpg34kD6ayOoBgxp8xj9L8">
+        <input id="cfg-sheet-id" type="text" placeholder="1MJw2R_vrw8NOOrNrwse6OfYM2n6LnvgZnby3UAPbGc0" value="1MJw2R_vrw8NOOrNrwse6OfYM2n6LnvgZnby3UAPbGc0">
       </div>
       <div style="margin-bottom:12px">
         <label>Service account credentials (JSON)</label>
@@ -281,9 +281,9 @@
 </div>
 
 <script>
-const DEFAULT_SHEET_ID = '1moyxhYXsWsiB5EjYUccgtDpg34kD6ayOoBgxp8xj9L8';
+const DEFAULT_SHEET_ID = '1MJw2R_vrw8NOOrNrwse6OfYM2n6LnvgZnby3UAPbGc0';
 const DEFAULT_SHEET_TAB = 'Pre-Event Potential Attendees';
-const HEADER_ROW = 4; // headers on row 4, data from row 5
+const HEADER_ROW = 1; // headers on row 1, data from row 2
 let contacts = [];
 let nextId = 1;
 let currentFilter = 'all';
@@ -296,7 +296,7 @@ function loadConfig() {
     const saved = JSON.parse(localStorage.getItem('nc_config') || '{}');
     const defaultCreds = JSON.parse(atob('eyJ0eXBlIjogInNlcnZpY2VfYWNjb3VudCIsICJwcm9qZWN0X2lkIjogIm5vYmxlY2FtcHMtZXZlbnRzLWFnZW50IiwgInByaXZhdGVfa2V5X2lkIjogIjFlOTI4ZjQ3ZDIzMmQ4YThkNDlkYzYzOWFhZmNiNDdmZDU5NjdiNmIiLCAicHJpdmF0ZV9rZXkiOiAiLS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tXG5NSUlFdlFJQkFEQU5CZ2txaGtpRzl3MEJBUUVGQUFTQ0JLY3dnZ1NqQWdFQUFvSUJBUUNtSjg3ZjBqZlFVK3RZXG55YlQvRVV4cUk0UGdmV2RzKy94N3BFNWRobmk1UFVyS3lINk9hQm8wOXI5N241KzJyZHVHU0NiS3BwVWN1OFdMXG43M2pNbFc1NWFrTXJlNUxkaHluZmZCOXJ2RmZTcm1YeUJ1cFllejZtVjArdngvTFB0OG5sTzIzT2tOTDhaMElIXG56WS9jKzFrbkczL1VuWjZWWkR2VzM0aS9abHlKS3d1QUdzemM0VDFSVmM2amFEdmhuL1UzOFBJbVRHQytsbTlLXG5reWM0UFUvSm1hUFJaTTJ4YlFxOHQ2VEFZdmZPT0dYTWpxM001YnAwK2E5MWRkbFFvZzY4UnJYRVdmV3M5VG5CXG5kR3p3VkZLRU8xR2hSWmRQblo1eHlqSFprZzNOdVc1amtsODZndVZLYUo4cVFZT3lCd3FNby93VVA5MlpKREhJXG5DTG9tUE9QRkFnTUJBQUVDZ2dFQUdSVG5TS2d1SHJlY1RrSGNuYWhaMWFmWXozbCt0RmZ4akNTSVk5dlp1M1RDXG5Kb3hQZG1YR2x2b3NlNWZqL3lxTmVkN0laRXp6TTJ3dzdPZlFYMm1yVEk2NjV3UjNiaE5xUWI4MTZ3aDZaV1pJXG5JMW5oNUV0dWNLTzdkcmlETWRIM215LzJhbms0TUR2U0h1VnI4eHJLSVhvb09NczJWaXpVVDZKY3ZTL1JoaThIXG45VEFEY2pxb2tidDNKclNFVlNpZUREWWNKL3dYN1ZwQjRIdDlHbDhTeG1FTEFXRC94WExUdXNTdjJQTkd2K2s3XG5rR1ZHT2NUblBTZEI2ZW41c1ZjR3lscFpQVWN3blo4MmFieW4xYzRNSncvL1M3ZTF2alZ2NVJ3Um9kdFNFc0JwXG4wajhta3lvbFQzeGJLcjFWNW9kVi9jR0YycEZPUi9pR0ZWMWdYY0pIWFFLQmdRRFdCNVRLL3NxdEdHZUdTaFhKXG5oWFUvejlJQXlSNEdoSUsyMUtwSWI2OHVDMU9mVllpczJhaFZiczJ5alJwYi8yZWVleDFwL05nejAwaHdYQ1N4XG5IZEJyeitwUzYzVi9CeDhnbi9BRFZHMXFka2pCRzZDek44WVFzMjV1TGVGN3d3RnZ0bFlGSFhCYXJNZGdBUHpsXG5DTVMxTXp4Zm9jdk9kZ0RqWjRuNGp5RG5Gd0tCZ1FER3ZPcTBKeWxvTGtURUk3YTMraXdnWXQwZzN4bzQ5cW01XG5ELzg5RlJndVlxWHU1RDlDUFFKWG8vZzIxZEFvMVFBbG1PU0h3NmVMZnJoSWczNGtKMCthQ2FaZzhTZGlRdjIyXG4rekVabkpQcm4yWEk5NGN5d3M1UUhkaFhvdmh1c1RLd0xNODcydmJYUmNsV3lNazQ1QkkyL2tkbmpXbTJXTFZHXG51R01UTFRSVmd3S0JnR0Q2T0dvdVBxbGx1R3E1b051WjFBR2c2YmVmYVRKczBrbURYTkRMZ2lXcnppMFE5WWZVXG5hNWlpUnlQVEdaRjd6WGlhc2o0MjZjTzV4VVhjQ21nU2FVQ2dpYjBlb1RONGg1c2h2UC9WUG1xUncrOXoxRUhBXG5VTWQ2ZGR3SWYvV3k2ekN4L3BIOHY4N21JTVNZVGY1OUZaeEE1ZWN6Q1lTNEpUamt6amhJcWhEckFvR0JBTCthXG5RMjJNbEE4dERIOU5MMHdRbFpwanRtMktxdTFnWWlGWm11cDQrK2M4bEYzTkVHLzhBZFljNzZGdVlsSDdpVGkyXG5QeDNsTkJMNUNSSmdNNjBIZVdjNUJuOVFBSGhydmRBOFBRcEVPeGhmaFBKTU1yeHR0QnJwcXpwU2xOR2paUXNWXG5LSGE4bEY3WG1WVmlIeDRLUk1WZ1FkZEVMemJ1TDFjUFRmV2ZEMldoQW9HQWE5YUJuK1Fvd3NudDZMVHRSZUJTXG4wK2FCb0NiaFhkQVVtdE9INURzSTNLM2NBbjlMaDhLNVcwR0EzV0hVUlE2bUxaRFgrY0JsWXAzSEt4TWdXNCtzXG54enc2REh2ZmpOWFJwN1NSWU5peDdNRUFtdXFxbUY5bG1tRStMU1YrUjkvUDQ2bmlSUkhXcEd3dHdWZ3NnWGZ6XG5wK2xMVEJPdEU1cHpyTFpvNG5lbHpYdz1cbi0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS1cbiIsICJjbGllbnRfZW1haWwiOiAibm9ibGVjYW1wcy1hZ2VudEBub2JsZWNhbXBzLWV2ZW50cy1hZ2VudC5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbSIsICJjbGllbnRfaWQiOiAiMTA5NDEyMzMwNzQ4Mjk4NzA2MDEzIiwgImF1dGhfdXJpIjogImh0dHBzOi8vYWNjb3VudHMuZ29vZ2xlLmNvbS9vL29hdXRoMi9hdXRoIiwgInRva2VuX3VyaSI6ICJodHRwczovL29hdXRoMi5nb29nbGVhcGlzLmNvbS90b2tlbiIsICJhdXRoX3Byb3ZpZGVyX3g1MDlfY2VydF91cmwiOiAiaHR0cHM6Ly93d3cuZ29vZ2xlYXBpcy5jb20vb2F1dGgyL3YxL2NlcnRzIiwgImNsaWVudF94NTA5X2NlcnRfdXJsIjogImh0dHBzOi8vd3d3Lmdvb2dsZWFwaXMuY29tL3JvYm90L3YxL21ldGFkYXRhL3g1MDkvbm9ibGVjYW1wcy1hZ2VudCU0MG5vYmxlY2FtcHMtZXZlbnRzLWFnZW50LmlhbS5nc2VydmljZWFjY291bnQuY29tIiwgInVuaXZlcnNlX2RvbWFpbiI6ICJnb29nbGVhcGlzLmNvbSJ9'));
     config = {
-      sheetId: saved.sheetId || '1moyxhYXsWsiB5EjYUccgtDpg34kD6ayOoBgxp8xj9L8',
+      sheetId: saved.sheetId || '1MJw2R_vrw8NOOrNrwse6OfYM2n6LnvgZnby3UAPbGc0',
       creds: saved.creds || defaultCreds,
       apiKey: saved.apiKey || '',
       contacts: saved.contacts || []
@@ -544,7 +544,7 @@ async function syncToSheets() {
     ]);
     const tabName = encodeURIComponent(DEFAULT_SHEET_TAB);
     const resp = await fetch(
-      `https://sheets.googleapis.com/v4/spreadsheets/${getSheetId()}/values/${tabName}!A5:K:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`,
+      `https://sheets.googleapis.com/v4/spreadsheets/${getSheetId()}/values/${tabName}!A2:K:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`,
       { method: 'POST', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ values: rows }) }
     );
@@ -596,7 +596,7 @@ async function syncContactToSheet(c, feedbackId) {
     ];
     const tabName = encodeURIComponent(DEFAULT_SHEET_TAB);
     const resp = await fetch(
-      `https://sheets.googleapis.com/v4/spreadsheets/${getSheetId()}/values/${tabName}!A5:K:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`,
+      `https://sheets.googleapis.com/v4/spreadsheets/${getSheetId()}/values/${tabName}!A2:K:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`,
       { method: 'POST', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ values: [row] }) }
     );
@@ -747,7 +747,7 @@ async function confirmImport() {
       '', '', c.notes
     ]);
     const resp = await fetch(
-      `https://sheets.googleapis.com/v4/spreadsheets/${getSheetId()}/values/${encodeURIComponent(DEFAULT_SHEET_TAB)}!A5:K:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`,
+      `https://sheets.googleapis.com/v4/spreadsheets/${getSheetId()}/values/${encodeURIComponent(DEFAULT_SHEET_TAB)}!A2:K:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`,
       { method: 'POST', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ values: rows }) }
     );
