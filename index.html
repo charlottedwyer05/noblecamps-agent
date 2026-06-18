@@ -120,18 +120,8 @@
       </div>
       <div>
         <label>J · Notes</label>
-        <select id="f-registration" style="width:100%;box-sizing:border-box">
-          <option value="">—</option>
-          <option value="Not Registered">Not Registered</option>
-          <option value="Registered">Registered</option>
-          <option value="Attended">Attended</option>
-          <option value="No Show">No Show</option>
-        </select>
+        <input type="text" id="f-notes" placeholder="Any context from the event...">
       </div>
-    </div>
-    <div style="margin-bottom:12px">
-      <label>K · Registration Status</label>
-      <input id="f-notes" type="text" placeholder="Any context from the event...">
     </div>
     <button class="btn btn-primary btn-full" onclick="addContact()">Save contact</button>
     <div class="feedback" id="add-feedback"></div>
@@ -187,32 +177,21 @@
         </div>
       </div>
       <div style="margin-bottom:12px">
-        <label>K · Registration Status</label>
-        <input id="cf-notes" type="text" placeholder="Any context from the event...">
-      </div>
-      <div class="form-grid">
-        <div>
-          <label>I · Relationship potential</label>
-          <select id="cf-relationship" style="width:100%;box-sizing:border-box">
-            <option value="">—</option>
-          <option value="Potential Client">Potential Client</option>
-          <option value="Potential Trainer">Potential Trainer</option>
-          <option value="General Contact">General Contact</option>
-          <option value="Partner">Partner</option>
-          </select>
-        </div>
-        <div>
-          <label>J · Notes</label>
-          <select id="cf-registration" style="width:100%;box-sizing:border-box">
-            <option value="">Unclassified</option>
-            <option value="Client">Client — likely to buy training</option>
-            <option value="Trainer">Trainer — could deliver sessions</option>
-            <option value="General">General — keep warm</option>
-          </select>
+        <label>I · Relationship potential</label>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:4px">
+          <label style="display:flex;align-items:center;gap:8px;padding:10px 12px;border:0.5px solid #d3d1c7;border-radius:8px;background:#fff;font-size:13px;color:#1a1a18;cursor:pointer">
+            <input type="checkbox" value="Potential Client" class="cf-rel-check" style="accent-color:#5b011b;width:16px;height:16px"> Potential Client
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;padding:10px 12px;border:0.5px solid #d3d1c7;border-radius:8px;background:#fff;font-size:13px;color:#1a1a18;cursor:pointer">
+            <input type="checkbox" value="Potential Sponsor" class="cf-rel-check" style="accent-color:#5b011b;width:16px;height:16px"> Potential Sponsor
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;padding:10px 12px;border:0.5px solid #d3d1c7;border-radius:8px;background:#fff;font-size:13px;color:#1a1a18;cursor:pointer">
+            <input type="checkbox" value="Potential Expert" class="cf-rel-check" style="accent-color:#5b011b;width:16px;height:16px"> Potential Expert
+          </label>
         </div>
       </div>
       <div style="margin-bottom:12px">
-        <label>K · Registration Status</label>
+        <label>J · Notes</label>
         <input id="cf-notes" type="text" placeholder="Any context from the event...">
       </div>
       <button class="btn btn-primary btn-full" onclick="confirmCardContact()">Save contact</button>
@@ -281,7 +260,8 @@
         <div><label>F · LinkedIn column</label><input id="map-linkedin" type="text" placeholder="e.g. LinkedIn" value="LinkedIn"></div>
         <div><label>G · Website column</label><input id="map-website" type="text" placeholder="e.g. Website" value="Website"></div>
         <div><label>H · Source column</label><input id="map-source" type="text" placeholder="e.g. Source" value="Source"></div>
-        <div><label>K · Notes column</label><input id="map-notes" type="text" placeholder="e.g. Notes" value="Notes"></div>
+        <div><label>I · Relationship potential column</label><input id="map-relationship" type="text" placeholder="e.g. Relationship potential" value="Relationship potential"></div>
+        <div><label>J · Notes column</label><input id="map-notes" type="text" placeholder="e.g. Notes" value="Notes"></div>
       </div>
       <p style="font-size:11px;color:#B4B2A9;margin-top:8px">Leave all blank to auto-detect columns by header name.</p>
     </div>
@@ -734,9 +714,10 @@ async function previewImport() {
     const linkedinIdx= getColIndex(importedHeaders, document.getElementById('map-linkedin').value,['linkedin','linked in']);
     const sectorIdx  = getColIndex(importedHeaders, document.getElementById('map-sector').value,  ['sector','industry','field']);
     const websiteIdx = getColIndex(importedHeaders, document.getElementById('map-website').value,  ['website','web','url','site']);
-    const notesIdx   = getColIndex(importedHeaders, document.getElementById('map-notes').value,   ['notes','comments','remarks','note']);
+    const relationshipIdx = getColIndex(importedHeaders, document.getElementById('map-relationship').value, ['relationship potential','relationship','potential']);
+  const notesIdx   = getColIndex(importedHeaders, document.getElementById('map-notes').value,   ['notes','comments','remarks','note']);
 
-    window._importMap = { nameIdx, emailIdx, companyIdx, titleIdx, linkedinIdx, sectorIdx, websiteIdx, notesIdx };
+    window._importMap = { nameIdx, emailIdx, companyIdx, titleIdx, linkedinIdx, sectorIdx, websiteIdx, relationshipIdx, notesIdx };
 
     const previews = importedRows.slice(0, 50).map(row => ({
       name:     nameIdx    >= 0 ? (row[nameIdx]    || '') : '',
@@ -785,6 +766,7 @@ async function confirmImport() {
       sector:   m.sectorIdx  >= 0 ? (row[m.sectorIdx]  || '') : '',
       website:  m.websiteIdx >= 0 ? (row[m.websiteIdx] || '') : '',
       notes:    notes,
+      relationshipPotential: m.relationshipIdx >= 0 ? (row[m.relationshipIdx] || '') : '',
       source: 'Colleague import', classification: 'pending',
       reason: '', synced: false,
       dateAdded: new Date().toLocaleDateString('en-GB')
